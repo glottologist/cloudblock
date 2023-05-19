@@ -121,13 +121,13 @@
         path: /opt/cloudflared/Dockerfile
         block: |
           FROM ubuntu:bionic
-          EXPOSE 53/tcp
-          EXPOSE 53/udp
+          EXPOSE 54/tcp
+          EXPOSE 54/udp
           RUN apt-get update && \
               apt-get install -y wget && \
               wget https://github.com/cloudflare/cloudflared/releases/download/2022.4.1/cloudflared-linux-amd64 --directory-prefix=/usr/local/bin/ && \
               chmod 555 /usr/local/bin/cloudflared-linux-amd64
-              ENTRYPOINT ["/usr/local/bin/cloudflared-linux-amd64", "proxy-dns","--address", "{{ docker_doh }}", "--port", "53", "--upstream", "{{ doh_url.stdout }}"]
+              ENTRYPOINT ["/usr/local/bin/cloudflared-linux-amd64", "proxy-dns","--address", "{{ docker_doh }}", "--port", "54", "--upstream", "{{ doh_url.stdout }}"]
       register: cloudflared_doh_dockerfile
 
     - name: Cloudflared image
@@ -191,8 +191,8 @@
           - name: cloudblock
             ipv4_address: "{{ docker_pihole }}"
         ports:
-          - "53:53"
-          - "53:53/udp"
+          - "54:54"
+          - "54:54/udp"
         volumes:
           - /opt/pihole/etc:/etc/pihole/:rw
           - /opt/pihole/dnsmasq.d:/etc/dnsmasq.d:rw
